@@ -1,26 +1,29 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    カード一覧:{{ cardList }}<br />
+    カテゴリ一覧:{{ categoryList }}
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  components: {},
+  setup() {
+    //Vuexを使う設定
+    const store = useStore();
+    //コンポーネントがマウントされた時にcategoryListとcardListをAPIから取得
+    onMounted(store.dispatch("fetchCategoryList"));
+    onMounted(store.dispatch("fetchCardList"));
+    return{
+      cardList: computed(() => store.state.cardList),
+      categoryList: computed(() => store.state.categoryList)
+    };
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>
